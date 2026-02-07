@@ -1,20 +1,13 @@
-# Use Node.js 20 (Slim version is faster and lighter)
-FROM node:20-bullseye-slim
+FROM node:18-bullseye-slim
 
-# Set working directory
 WORKDIR /usr/src/app
 
-# Copy package files first
 COPY package*.json ./
 
-# Install dependencies (ignoring optional ones to prevent errors)
-RUN npm install --no-optional
+RUN npm install --omit=optional && npm cache clean --force
 
-# Copy the rest of the files
 COPY . .
 
-# Expose the port
 EXPOSE 8000
 
-# Start the bot directly (This matches the new package.json)
 CMD ["node", "index.js"]
